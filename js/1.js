@@ -1,0 +1,85 @@
+$(function() {
+
+	var scene, camera, renderer;
+
+	var WIDTH, HEIGHT;
+
+	WIDTH = 900,
+	HEIGHT = 500;
+
+	scene = new THREE.Scene();
+	camera = new THREE.PerspectiveCamera(75, WIDTH/HEIGHT, 1, 1000);
+
+	//Should really add some kind of fallback, try/catch, or Detector.js
+	renderer = new THREE.WebGLRenderer();
+	renderer.setSize(WIDTH, HEIGHT);
+
+	//Append canvas element that renderer generates to html
+	$("#main").append(renderer.domElement);
+
+	var geometry, material, cube;
+
+	geometryA = new THREE.CubeGeometry(0.5,0.6,0.5);
+	geometryB = new THREE.CubeGeometry(0.5,0.5,0.5);
+
+	material = new THREE.MeshBasicMaterial({
+		color: 0x89B0B3,
+		wireframe: true,
+		wireframeLinewidth: 3,
+		vertexColors: true
+	});
+	
+	cubeA = new THREE.Mesh(geometryA, material);
+	cubeB = new THREE.Mesh(geometryB, material);
+
+
+	scene.add(cubeA);
+	scene.add(cubeB);
+
+	//back up the camera
+	camera.position.z = 1.8;
+	
+    /*
+	* xDir - Horizontal (x) velocity
+	* yRotDir - The direction of the cube's horizontal rotation (left/right)
+	* limit - The bounding x coordinates for the visible area.
+	*/
+	var xDir = 0.01,
+	 	yRotDir = 1,
+	 	limit = 1.7;
+
+	var cubeA_anim = function () {
+		cubeA.position.y = .8;
+		cubeA.position.x += xDir;
+
+		if(cubeA.position.x >= limit)
+			xDir = -xDir;
+		else if(cubeA.position.x <= -limit)
+			xDir = Math.abs(xDir);
+	}
+
+	var cubeB_anim = function () {
+		cubeB.position.x += xDir;
+
+		//Slow down the speed as you get closer to the edge
+		cubeB.rotation.y += (0.1*(limit-Math.abs(cubeB.position.x))) * yRotDir;
+
+		if(cubeB.position.x >= limit){
+			xDir = -xDir;
+			yRotDir = -yRotDir;
+		}else if(cubeB.position.x <= -limit){
+			xDir = Math.abs(xDir);
+			yRotDir = -yRotDir;
+		}
+	}
+
+	var render = function () {
+		requestAnimationFrame(render);
+		cubeA_anim();
+		cubeB_anim();
+		renderer.render(scene, camera);
+	};
+
+	render();		
+
+});
