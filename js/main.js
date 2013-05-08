@@ -1,8 +1,9 @@
 $(function() {
 
 	var count = 0;
-	var scene, camera, renderer;
+
 	function init () {
+		count++;
 		load();
 	}
 	//Load the current experiment
@@ -10,7 +11,12 @@ $(function() {
 		//cleanup	    	
 		$('#main').empty();
 
-		count++;
+		if(count > 1){
+			$('button.prev').removeAttr('disabled');
+		}else{
+			$('button.prev').attr('disabled', '');
+
+		}
 
 		var old, head;
 
@@ -37,10 +43,19 @@ $(function() {
 
 	//Navigation handler
 	function seek (e) {
-
+		var target = e.currentTarget.className;
+		if(target == 'next'){
+			count++;
+		}else{
+			count--;
+		}
+		load();
 	}
 
-	$('button.next').on('click', load);
+	$('button.next').on('click', seek);
+
+	$('button.prev').on('click', seek);
+
 
 	init();
 

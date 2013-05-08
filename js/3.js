@@ -7,7 +7,7 @@ $(function() {
 		vertex_shader = data[0];
 		fragment_shader = data[1];
 
-		var title = 'Experiment 2: Basic Shader';
+		var title = 'Experiment 3: Perlin Noise & Turbulence';
 
 		$('.title').fadeOut(500,function(){
 			$('.title').text(title);
@@ -41,35 +41,25 @@ $(function() {
 			fragmentShader: fragment_shader
 		});
 
-		sphereShaded = new THREE.Mesh(geometry, material);
+		spherePerlin = new THREE.Mesh(geometry, material);
 		
 
-		scene.add(sphereShaded);
-		camera.position.z = 200;
+		scene.add(spherePerlin);
+		camera.position.z = 50;
 
 		var zDir = 1;
 
-		var sphereShadedAnim = function(){
-			sphereShaded.position.z += 0.05 * zDir * Math.abs(150-sphereShaded.position.z);
-
-			var z = Math.round(sphereShaded.position.z);
-			sphereShaded.rotation.z += Math.random() * .1;
-			if(z >= 150){
-				zDir = -zDir;
-			}else if(z <= 0){
-				zDir = -zDir;
-			}
-
-		}
 
 		var render = function () {
 			requestAnimationFrame(render);
-			sphereShadedAnim();
+			spherePerlin.rotation.y += .01;
+			spherePerlin.rotation.z += 0.005;
+
 			renderer.render(scene, camera);
 		};
 
 		render();
 	}
-	$.get('js/shaders/2.glsl', main);
+	$.get('js/shaders/3.glsl', main);
 
 });

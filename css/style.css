@@ -44,6 +44,10 @@ button {
 
 /* My Styles
 *****************************************************************************/
+body, html{
+  font-family:Helvetica;
+}
+
 button{
 	font-size:14px;
 	padding:10px;
@@ -61,14 +65,21 @@ button.next{
 
 header{
 	overflow: hidden;
+  text-align: center; 
+  width: 100%;
+  margin-bottom: 100px;
 }
-
+header h1.title{
+  margin:0;
+  display: inline-block;
+}
 #main{
 	width: 100%;
 	text-align:center;
 }
 
 canvas{
-	display: inline;
+  border: dashed 1px black;
 }
+
 
